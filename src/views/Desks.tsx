@@ -1,9 +1,11 @@
 import { ChangeEvent, useState } from 'react'
 import { Desk } from '../reducers'
 import { useDesks } from '../hooks/useDesks'
+import { useEmployees } from '../hooks/useEmployees'
 
 export const Desks = () => {
   const { desks, addDesk } = useDesks()
+  const { assignDesksToEmployees } = useEmployees()
   const [deskName, setDeskName] = useState<string>('')
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +24,9 @@ export const Desks = () => {
     resetDeskForm()
   }
 
-  const onAssignDesks = () => {}
+  const onAssignDesks = () => {
+    assignDesksToEmployees()
+  }
 
   return (
     <div>
