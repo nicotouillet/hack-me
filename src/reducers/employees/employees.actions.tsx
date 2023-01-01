@@ -41,7 +41,7 @@ type SetAssignedDesk = {
 type SetPreferredDesks = {
   type: E_EMPLOYEES_ACTIONS.SET_PREFERRED_DESKS
   payload: {
-    desks: string[]
+    desksIds: string[]
     employee: Employee
   }
 }
@@ -70,9 +70,9 @@ export const setEmployees = (employees: Employee[]): SetEmployees => ({
   payload: employees
 })
 
-export const setPreferredDesks = (desks: string[], employee: Employee): SetPreferredDesks => ({
+export const setPreferredDesks = (desksIds: string[], employee: Employee): SetPreferredDesks => ({
   type: E_EMPLOYEES_ACTIONS.SET_PREFERRED_DESKS,
-  payload: { desks, employee }
+  payload: { desksIds, employee }
 })
 
 export type EmployeesActions =
