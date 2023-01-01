@@ -17,7 +17,7 @@ export const Employees = () => {
   const [desksOptions, setDesksOptions] = useState<DeskOption[]>([])
   const [employeeName, setEmployeeName] = useState<string>('')
   const [employeeEmail, setEmployeeEmail] = useState<string>('')
-  const [employeePreferredDesks, setEmployeePreferredDesks] = useState<Desk[]>([])
+  const [employeeDesksChoices, setEmployeeDesksChoices] = useState<MultiValue<DeskOption>>([])
 
   useEffect(() => {
     setDesksOptions(desks.map((desk: Desk) => ({ value: desk.id, label: desk.name })))
@@ -31,19 +31,27 @@ export const Employees = () => {
     setEmployeeEmail(event.target.value)
   }
 
-  const onChangePreferredDesks = (newValue: MultiValue<DeskOption>) => {
-    setEmployeePreferredDesks(newValue.map((deskValue: DeskOption) => ({ id: deskValue.value, name: deskValue.label })))
+  const onSelectDesksChoice = (newValue: MultiValue<DeskOption>) => {
+    setEmployeeDesksChoices(newValue)
   }
 
   const resetEmployeeForm = () => {
     setEmployeeName('')
     setEmployeeEmail('')
-    setEmployeePreferredDesks([])
+    setEmployeeDesksChoices([])
   }
 
   const onAddEmployee = () => {
-    if (employeeName.length === 0 || employeeEmail.length === 0 || employeePreferredDesks.length === 0) {
+    if (employeeName.length === 0 || employeeEmail.length === 0 || employeeDesksChoices.length === 0) {
       return
+    }
+
+    const employeePreferredDesks: Desk[] = []
+    for (const employeeDeskChoice of employeeDesksChoices) {
+      const deskFromList = desks.find((desk: Desk) => desk.id === employeeDeskChoice.value)
+      if (deskFromList) {
+        employeePreferredDesks.push(deskFromList)
+      }
     }
 
     dispatch({
@@ -70,14 +78,15 @@ export const Employees = () => {
       <div>
         <h2>Add a new employee:</h2>
         <input type="text" placeholder="Employee name" value={employeeName} onChange={onChangeName} />
-        <input type="text" placeholder="Desk name" value={employeeEmail} onChange={onChangeEmail} />
+        <input type="email" placeholder="Employee email" value={employeeEmail} onChange={onChangeEmail} />
         <Select
           isMulti
           name="employeePreferredDesks"
           options={desksOptions}
           className="basic-multi-select"
           classNamePrefix="select"
-          onChange={onChangePreferredDesks}
+          value={employeeDesksChoices}
+          onChange={onSelectDesksChoice}
         ></Select>
         <button onClick={onAddEmployee}>Add employee</button>
       </div>
