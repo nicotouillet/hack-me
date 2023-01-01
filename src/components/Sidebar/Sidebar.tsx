@@ -8,8 +8,8 @@ export const Sidebar = ({ routes }: SidebarProps) => {
   return (
     <aside className="w-64">
       <ul className="py-4 px-3 bg-gray-50 rounded">
-        {routes.map((route) => (
-          <li>
+        {routes.map((route: AppRoute, index: number) => (
+          <li key={index}>
             <Link className="p-2 text-gray-900 rounded-lg hover:bg-gray-100" to={route.path}>
               {route.label}
             </Link>

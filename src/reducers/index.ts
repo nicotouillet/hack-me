@@ -1,0 +1,6 @@
+export * from './desks/desks.actions'
+export * from './desks/desks.reducer'
+export * from './desks/desks.types'
+export * from './employees/employees.actions'
+export * from './employees/employees.reducer'
+export * from './employees/employees.types'
