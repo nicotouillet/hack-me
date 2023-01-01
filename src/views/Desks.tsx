@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
 import { DesksContext } from '../providers/desks'
 import { Desk, E_DESKS_ACTIONS } from '../reducers'
+import { createDesk } from '../helpers/desk'
 
 export const Desks = () => {
   const { desks, dispatch } = useContext(DesksContext)
@@ -20,7 +20,7 @@ export const Desks = () => {
       return
     }
 
-    dispatch({ type: E_DESKS_ACTIONS.ADD_DESK, payload: { id: uuidv4(), name: deskName } })
+    dispatch({ type: E_DESKS_ACTIONS.ADD_DESK, payload: createDesk(deskName) })
     resetDeskForm()
   }
 

@@ -1,14 +1,10 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
-import { Desk, E_EMPLOYEES_ACTIONS, Employee } from '../reducers'
+import { Desk, DeskOption, E_EMPLOYEES_ACTIONS, Employee } from '../reducers'
 import { EmployeesContext } from '../providers/employees'
-import { v4 as uuidv4 } from 'uuid'
 import Select, { MultiValue } from 'react-select'
 import { DesksContext } from '../providers/desks'
-
-export type DeskOption = {
-  value: string
-  label: string
-}
+import { createEmployee } from '../helpers/employee'
+import { buildPreferredDesks } from '../helpers/desk'
 
 export const Employees = () => {
   const { employees, dispatch } = useContext(EmployeesContext)
@@ -46,17 +42,9 @@ export const Employees = () => {
       return
     }
 
-    const employeePreferredDesks: Desk[] = []
-    for (const employeeDeskChoice of employeeDesksChoices) {
-      const deskFromList = desks.find((desk: Desk) => desk.id === employeeDeskChoice.value)
-      if (deskFromList) {
-        employeePreferredDesks.push(deskFromList)
-      }
-    }
-
     dispatch({
       type: E_EMPLOYEES_ACTIONS.ADD_EMPLOYEE,
-      payload: { id: uuidv4(), name: employeeName, email: employeeEmail, preferredDesks: employeePreferredDesks }
+      payload: createEmployee(employeeName, employeeEmail, buildPreferredDesks(employeeDesksChoices, desks))
     })
 
     resetEmployeeForm()
