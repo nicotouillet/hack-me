@@ -9,13 +9,13 @@ export const createDesk = (name: string): Desk => {
   }
 }
 
-export const buildPreferredDesks = (deskChoices: MultiValue<DeskOption>, desks: Desk[]): Desk[] => {
-  const preferredDesks: Desk[] = []
+export const buildPreferredDesks = (deskChoices: MultiValue<DeskOption>, desks: Desk[]): string[] => {
+  const preferredDesks: string[] = []
 
   for (const deskChoice of deskChoices) {
     const deskFromList = desks.find((desk: Desk) => desk.id === deskChoice.value)
     if (deskFromList) {
-      preferredDesks.push(deskFromList)
+      preferredDesks.push(deskFromList.id)
     }
   }
 

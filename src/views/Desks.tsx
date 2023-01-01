@@ -1,10 +1,9 @@
-import { ChangeEvent, useContext, useState } from 'react'
-import { DesksContext } from '../providers/desks'
-import { Desk, E_DESKS_ACTIONS } from '../reducers'
-import { createDesk } from '../helpers/desk'
+import { ChangeEvent, useState } from 'react'
+import { Desk } from '../reducers'
+import { useDesks } from '../hooks/useDesks'
 
 export const Desks = () => {
-  const { desks, dispatch } = useContext(DesksContext)
+  const { desks, addDesk } = useDesks()
   const [deskName, setDeskName] = useState<string>('')
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -19,10 +18,11 @@ export const Desks = () => {
     if (deskName.length === 0) {
       return
     }
-
-    dispatch({ type: E_DESKS_ACTIONS.ADD_DESK, payload: createDesk(deskName) })
+    addDesk(deskName)
     resetDeskForm()
   }
+
+  const onAssignDesks = () => {}
 
   return (
     <div>
@@ -32,7 +32,7 @@ export const Desks = () => {
         <h2>Desks list:</h2>
         <ul>
           {desks.map((desk: Desk, index: number) => (
-            <li key={index}>{desk.name}</li>
+            <li key={index}>Name: {desk.name}</li>
           ))}
         </ul>
       </div>
@@ -41,6 +41,11 @@ export const Desks = () => {
         <h2>Add a new desk:</h2>
         <input type="text" placeholder="Desk name" value={deskName} onChange={onChange} />
         <button onClick={onAddDesk}>Add desk</button>
+      </div>
+
+      <div>
+        <h2>Assign desks:</h2>
+        <button onClick={onAssignDesks}>Assign desks</button>
       </div>
     </div>
   )

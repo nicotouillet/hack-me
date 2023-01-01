@@ -4,7 +4,7 @@ export type Employee = {
   id: string
   name: string
   email: string
-  preferredDesks: Desk[]
+  preferredDesks: string[]
   assignedDesk?: Desk
 }
 

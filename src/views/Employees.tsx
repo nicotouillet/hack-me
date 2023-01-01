@@ -1,13 +1,11 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react'
-import { Desk, DeskOption, E_EMPLOYEES_ACTIONS, Employee } from '../reducers'
-import { EmployeesContext } from '../providers/employees'
+import { Desk, DeskOption, Employee } from '../reducers'
 import Select, { MultiValue } from 'react-select'
 import { DesksContext } from '../providers/desks'
-import { createEmployee } from '../helpers/employee'
-import { buildPreferredDesks } from '../helpers/desk'
+import { useEmployees } from '../hooks/useEmployees'
 
 export const Employees = () => {
-  const { employees, dispatch } = useContext(EmployeesContext)
+  const { employees, addEmployee } = useEmployees()
   const { desks } = useContext(DesksContext)
 
   const [desksOptions, setDesksOptions] = useState<DeskOption[]>([])
@@ -38,15 +36,10 @@ export const Employees = () => {
   }
 
   const onAddEmployee = () => {
-    if (employeeName.length === 0 || employeeEmail.length === 0 || employeeDesksChoices.length === 0) {
+    if (employeeName.length === 0 || employeeEmail.length === 0) {
       return
     }
-
-    dispatch({
-      type: E_EMPLOYEES_ACTIONS.ADD_EMPLOYEE,
-      payload: createEmployee(employeeName, employeeEmail, buildPreferredDesks(employeeDesksChoices, desks))
-    })
-
+    addEmployee(employeeName, employeeEmail, employeeDesksChoices)
     resetEmployeeForm()
   }
 
@@ -58,7 +51,9 @@ export const Employees = () => {
         <h2>Employees list:</h2>
         <ul>
           {employees.map((employee: Employee, index: number) => (
-            <li key={index}>{employee.name}</li>
+            <li key={index}>
+              Name: {employee.name} - Assigned desk: {employee.assignedDesk ? employee.assignedDesk.name : '-'}
+            </li>
           ))}
         </ul>
       </div>
