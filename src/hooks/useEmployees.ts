@@ -17,8 +17,10 @@ export const useEmployees = () => {
     })
 
   const assignDesks = () => {
+    let assigned: any = {}
     const assignedDesks: string[] = []
-    const firstChoices: any = {}
+    const assignedEmployees: string[] = []
+    let firstChoices: any = {}
     const noChoices: string[] = []
     let uniqueFirstChoices: string[] = []
 
@@ -31,10 +33,20 @@ export const useEmployees = () => {
       firstChoices[employee.id] = employee.preferredDesks[0]
     }
 
-    for (const [employee, desk] of Object.entries(firstChoices)) {
-      if (uniqueFirstChoices.indexOf(desk as string) === -1) {
+    for (const desk of Object.values(firstChoices)) {
+      const deskIndex = uniqueFirstChoices.indexOf(desk as string)
+      if (deskIndex === -1) {
         uniqueFirstChoices.push(desk as string)
       } else {
+        uniqueFirstChoices = uniqueFirstChoices.splice(deskIndex, 1)
+      }
+    }
+
+    for (const [employee, desk] of Object.entries(firstChoices)) {
+      if (uniqueFirstChoices.indexOf(desk as string) >= 0) {
+        assignedDesks.push(desk as string)
+        assignedEmployees.push(employee)
+        assigned[employee] = desk
       }
     }
   }
