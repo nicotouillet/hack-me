@@ -1,18 +1,22 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Layout } from './views/Layout'
-import { Desks } from './views/Desks'
-import { Employees } from './views/Employees'
+import { E_APP_ROUTES } from './routes'
 
-export const App = () => (
+import { Layout } from './views/Layout'
+import { Desks, Employees, Home } from './views'
+
+const App = () => (
   <div className="App">
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="desks" element={<Desks />} />
-          <Route path="employees" element={<Employees />} />
+        <Route path={E_APP_ROUTES.INDEX} element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path={E_APP_ROUTES.DESKS} element={<Desks />} />
+          <Route path={E_APP_ROUTES.EMPLOYEES} element={<Employees />} />
         </Route>
       </Routes>
     </BrowserRouter>
   </div>
 )
+
+export default App
